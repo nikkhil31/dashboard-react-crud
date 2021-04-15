@@ -3,6 +3,7 @@ import { IoIosArrowRoundBack } from 'react-icons/io'
 import { Link } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
+import { useUsers } from '../contexts/usersProvider'
 
 const addUserSchema = Yup.object().shape({
     fname: Yup.string().required(),
@@ -14,7 +15,9 @@ const addUserSchema = Yup.object().shape({
     address: Yup.string().required(),
 })
 
-const UserAdd = () => {
+const UserAdd = ({ history }) => {
+    const { addUser } = useUsers()
+
     return (
         <>
             <div>
@@ -48,8 +51,8 @@ const UserAdd = () => {
                         }}
                         validationSchema={addUserSchema}
                         onSubmit={(values) => {
-                            // same shape as initial values
-                            console.log(values)
+                            addUser(values)
+                            history.push('/')
                         }}
                     >
                         {({ errors, touched }) => (

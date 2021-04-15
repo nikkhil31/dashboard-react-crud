@@ -1,7 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useUsers } from '../contexts/usersProvider'
 
 const UserMgmt = () => {
+    const { users } = useUsers()
+
     return (
         <>
             <div className="header">
@@ -17,85 +20,23 @@ const UserMgmt = () => {
             </div>
             <main>
                 <table>
-                    <tbody>
-                        <tr>
-                            <th>Owner</th>
-                            <th>End date</th>
-                            <th>Profit</th>
-                            <th>Losses</th>
-                            <th>Phone</th>
-                        </tr>
-                        <tr>
-                            <td>Nikhil Limbad</td>
-                            <td>1/15/12</td>
-                            <td>$328.25</td>
-                            <td>$779.58</td>
-                            <td>(603) 555-0123</td>
-                        </tr>
-                        <tr>
-                            <td>Nikhil Limbad</td>
-                            <td>1/15/12</td>
-                            <td>$328.25</td>
-                            <td>$779.58</td>
-                            <td>(603) 555-0123</td>
-                        </tr>
-                        <tr>
-                            <td>Nikhil Limbad</td>
-                            <td>1/15/12</td>
-                            <td>$328.25</td>
-                            <td>$779.58</td>
-                            <td>(603) 555-0123</td>
-                        </tr>
-                        <tr>
-                            <td>Nikhil Limbad</td>
-                            <td>1/15/12</td>
-                            <td>$328.25</td>
-                            <td>$779.58</td>
-                            <td>(603) 555-0123</td>
-                        </tr>
-                        <tr>
-                            <td>Nikhil Limbad</td>
-                            <td>1/15/12</td>
-                            <td>$328.25</td>
-                            <td>$779.58</td>
-                            <td>(603) 555-0123</td>
-                        </tr>
-                        <tr>
-                            <td>Nikhil Limbad</td>
-                            <td>1/15/12</td>
-                            <td>$328.25</td>
-                            <td>$779.58</td>
-                            <td>(603) 555-0123</td>
-                        </tr>
-                        <tr>
-                            <td>Nikhil Limbad</td>
-                            <td>1/15/12</td>
-                            <td>$328.25</td>
-                            <td>$779.58</td>
-                            <td>(603) 555-0123</td>
-                        </tr>
-                        <tr>
-                            <td>Nikhil Limbad</td>
-                            <td>1/15/12</td>
-                            <td>$328.25</td>
-                            <td>$779.58</td>
-                            <td>(603) 555-0123</td>
-                        </tr>
-                        <tr>
-                            <td>Nikhil Limbad</td>
-                            <td>1/15/12</td>
-                            <td>$328.25</td>
-                            <td>$779.58</td>
-                            <td>(603) 555-0123</td>
-                        </tr>
-                        <tr>
-                            <td>Nikhil Limbad</td>
-                            <td>1/15/12</td>
-                            <td>$328.25</td>
-                            <td>$779.58</td>
-                            <td>(603) 555-0123</td>
-                        </tr>
-                    </tbody>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Education</th>
+                        <th>Phone</th>
+                    </tr>
+                    {users &&
+                        users.map((user) => (
+                            <tr>
+                                <td>{user.fname}</td>
+                                <td>{user.lname}</td>
+                                <td>{user.email}</td>
+                                <td>{user.education}</td>
+                                <td>{user.phone}</td>
+                            </tr>
+                        ))}
                 </table>
             </main>
         </>
