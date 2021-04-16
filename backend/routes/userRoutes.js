@@ -1,8 +1,10 @@
 import express from 'express'
 const app = express.Router()
 
-import userRoutes from './userRoutes.js'
+app.get('/',(req,res)=>{
+    res.send('hii')
+})
 
-app.use('/user',userRoutes)
+
 
 export default app
