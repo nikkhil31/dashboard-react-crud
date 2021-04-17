@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useUsers } from '../contexts/usersProvider'
 
 const UserMgmt = () => {
-    const { users } = useUsers()
+    const { users, getUser } = useUsers()
+
+    useEffect(() => {
+        getUser()
+        // eslint-disable-next-line
+    }, [])
 
     return (
         <>
@@ -20,23 +25,27 @@ const UserMgmt = () => {
             </div>
             <main>
                 <table>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Education</th>
-                        <th>Phone</th>
-                    </tr>
-                    {users &&
-                        users.map((user) => (
-                            <tr>
-                                <td>{user.fname}</td>
-                                <td>{user.lname}</td>
-                                <td>{user.email}</td>
-                                <td>{user.education}</td>
-                                <td>{user.phone}</td>
-                            </tr>
-                        ))}
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Education</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users &&
+                            users.map((user) => (
+                                <tr key={user._id}>
+                                    <td>{user.firstName}</td>
+                                    <td>{user.lastName}</td>
+                                    <td>{user.email}</td>
+                                    <td>{user.education}</td>
+                                    <td>{user.phone}</td>
+                                </tr>
+                            ))}
+                    </tbody>
                 </table>
             </main>
         </>

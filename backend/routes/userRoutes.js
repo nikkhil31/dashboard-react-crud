@@ -1,10 +1,7 @@
 import express from 'express'
+import { addUsers, getUsers } from '../controllers/userController.js'
 const app = express.Router()
 
-app.get('/',(req,res)=>{
-    res.send('hii')
-})
-
-
+app.route('/').get(getUsers).post(addUsers)
 
 export default app

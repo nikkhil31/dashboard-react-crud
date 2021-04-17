@@ -6,8 +6,8 @@ import * as Yup from 'yup'
 import { useUsers } from '../contexts/usersProvider'
 
 const addUserSchema = Yup.object().shape({
-    fname: Yup.string().required(),
-    lname: Yup.string().required(),
+    firstName: Yup.string().required(),
+    lastName: Yup.string().required(),
     email: Yup.string().email().required(),
     dob: Yup.string().required(),
     phone: Yup.number().required(),
@@ -41,8 +41,8 @@ const UserAdd = ({ history }) => {
                 <main>
                     <Formik
                         initialValues={{
-                            fname: '',
-                            lname: '',
+                            firstName: '',
+                            lastName: '',
                             email: '',
                             dob: '',
                             phone: '',
@@ -51,8 +51,7 @@ const UserAdd = ({ history }) => {
                         }}
                         validationSchema={addUserSchema}
                         onSubmit={(values) => {
-                            addUser(values)
-                            history.push('/')
+                            addUser(values) && history.push('/')
                         }}
                     >
                         {({ errors, touched }) => (
@@ -63,11 +62,11 @@ const UserAdd = ({ history }) => {
                                         <Field
                                             className="form-element"
                                             type="text"
-                                            name="fname"
-                                            id="fname"
+                                            name="firstName"
+                                            id="firstName"
                                         />
                                         <ErrorMessage
-                                            name="fname"
+                                            name="firstName"
                                             component="span"
                                             className="error"
                                         />
@@ -77,11 +76,11 @@ const UserAdd = ({ history }) => {
                                         <Field
                                             className="form-element"
                                             type="text"
-                                            id="lname"
-                                            name="lname"
+                                            id="lastName"
+                                            name="lastName"
                                         />
                                         <ErrorMessage
-                                            name="lname"
+                                            name="lastName"
                                             component="span"
                                             className="error"
                                         />
