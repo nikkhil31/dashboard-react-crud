@@ -13,6 +13,7 @@ function App() {
                 <div className="right">
                     <Route path="/" component={UserMgmt} exact />
                     <Route path="/add-user" component={UserAdd} />
+                    <Route path="/edit-user/:id" component={UserAdd} />
                 </div>
             </div>
         </Router>

@@ -37,6 +37,14 @@ const userSchema = mongoose.Schema(
     }
 )
 
+userSchema.set('toObject', { virtuals: true })
+userSchema.set('toJSON', { virtuals: true })
+
+userSchema.virtual('educationInWord').get(function () {
+    let e = ['Bsc (IT)', 'BE', 'BCA']
+    return e[this.education]
+})
+
 const User = mongoose.model('User', userSchema)
 
 export default User

@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { IoIosArrowRoundBack } from 'react-icons/io'
 import { Link } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useUsers } from '../contexts/usersProvider'
+import Loader from 'react-loader-spinner'
+import moment from 'moment'
 
 const addUserSchema = Yup.object().shape({
     firstName: Yup.string().required(),
@@ -15,8 +17,30 @@ const addUserSchema = Yup.object().shape({
     address: Yup.string().required(),
 })
 
-const UserAdd = ({ history }) => {
-    const { addUser } = useUsers()
+const UserAdd = ({ match, history }) => {
+    const {
+        user,
+        loading,
+        success,
+        getUser,
+        addUser,
+        updateUser,
+        setSuccess,
+        setUser,
+    } = useUsers()
+    const userId = match.params.id || null
+
+    useEffect(() => {
+        if (userId) {
+            getUser(userId)
+        } else {
+            setUser([])
+        }
+        if (success) {
+            setSuccess(false)
+            history.push('/')
+        }
+    }, [userId, success, history])
 
     return (
         <>
@@ -39,142 +63,170 @@ const UserAdd = ({ history }) => {
                     <div className="btns"></div>
                 </div>
                 <main>
-                    <Formik
-                        initialValues={{
-                            firstName: '',
-                            lastName: '',
-                            email: '',
-                            dob: '',
-                            phone: '',
-                            education: '',
-                            address: '',
-                        }}
-                        validationSchema={addUserSchema}
-                        onSubmit={(values) => {
-                            addUser(values) && history.push('/')
-                        }}
-                    >
-                        {({ errors, touched }) => (
-                            <Form>
-                                <div className="form-container">
-                                    <div className="form-group">
-                                        <label htmlFor="name">First Name</label>
-                                        <Field
-                                            className="form-element"
-                                            type="text"
-                                            name="firstName"
-                                            id="firstName"
-                                        />
-                                        <ErrorMessage
-                                            name="firstName"
-                                            component="span"
-                                            className="error"
-                                        />
+                    {loading ? (
+                        <Loader
+                            type="Puff"
+                            color="#00BFFF"
+                            height={100}
+                            width={100}
+                            className="loader-class"
+                        />
+                    ) : (
+                        <Formik
+                            enableReinitialize
+                            initialValues={{
+                                firstName: user.firstName || '',
+                                lastName: user.lastName || '',
+                                email: user.email || '',
+                                dob:
+                                    moment(new Date(user.dob)).format(
+                                        'YYYY-MM-DD'
+                                    ) || '',
+                                phone: user.phone || '',
+                                education: user.education || '',
+                                address: user.address || '',
+                            }}
+                            validationSchema={addUserSchema}
+                            onSubmit={(values) => {
+                                if (userId == null) {
+                                    addUser(values)
+                                } else {
+                                    updateUser(values, userId)
+                                }
+                            }}
+                        >
+                            {({ errors, touched }) => (
+                                <Form>
+                                    <div className="form-container">
+                                        <div className="form-group">
+                                            <label htmlFor="name">
+                                                First Name
+                                            </label>
+                                            <Field
+                                                className="form-element"
+                                                type="text"
+                                                name="firstName"
+                                                id="firstName"
+                                            />
+                                            <ErrorMessage
+                                                name="firstName"
+                                                component="span"
+                                                className="error"
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="name">
+                                                Last Name
+                                            </label>
+                                            <Field
+                                                className="form-element"
+                                                type="text"
+                                                id="lastName"
+                                                name="lastName"
+                                            />
+                                            <ErrorMessage
+                                                name="lastName"
+                                                component="span"
+                                                className="error"
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="dob">
+                                                Date Of Birth
+                                            </label>
+                                            <Field
+                                                className="form-element"
+                                                type="date"
+                                                name="dob"
+                                                id="dob"
+                                            />
+                                            <ErrorMessage
+                                                name="dob"
+                                                component="span"
+                                                className="error"
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="phone">Phone</label>
+                                            <Field
+                                                className="form-element"
+                                                type="text"
+                                                id="phone"
+                                                name="phone"
+                                            />
+                                            <ErrorMessage
+                                                name="phone"
+                                                component="span"
+                                                className="error"
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="name">Email</label>
+                                            <Field
+                                                className="form-element"
+                                                type="text"
+                                                id="email"
+                                                name="email"
+                                            />
+                                            <ErrorMessage
+                                                name="email"
+                                                component="span"
+                                                className="error"
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="education">
+                                                Education
+                                            </label>
+                                            <Field
+                                                as="select"
+                                                name="education"
+                                                className="form-element"
+                                                id="education"
+                                            >
+                                                <option value="">
+                                                    - select -
+                                                </option>
+                                                <option value={0}>
+                                                    Bsc (IT)
+                                                </option>
+                                                <option value={1}>BE</option>
+                                                <option value={2}>BCA</option>
+                                            </Field>
+                                            <ErrorMessage
+                                                name="education"
+                                                component="span"
+                                                className="error"
+                                            />
+                                        </div>
+                                        <div className="form-group span-2">
+                                            <label htmlFor="address">
+                                                Address
+                                            </label>
+                                            <Field
+                                                as="textarea"
+                                                className="textarea form-element"
+                                                name="address"
+                                                id="address"
+                                            />
+                                            <ErrorMessage
+                                                name="address"
+                                                component="span"
+                                                className="error"
+                                            />
+                                        </div>
+                                        <div className="form-group submit-btn span-2">
+                                            <Field
+                                                name="submit"
+                                                type="submit"
+                                                defaultValue="submit"
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="form-group">
-                                        <label htmlFor="name">Last Name</label>
-                                        <Field
-                                            className="form-element"
-                                            type="text"
-                                            id="lastName"
-                                            name="lastName"
-                                        />
-                                        <ErrorMessage
-                                            name="lastName"
-                                            component="span"
-                                            className="error"
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="dob">
-                                            Date Of Birth
-                                        </label>
-                                        <Field
-                                            className="form-element"
-                                            type="date"
-                                            name="dob"
-                                            id="dob"
-                                        />
-                                        <ErrorMessage
-                                            name="dob"
-                                            component="span"
-                                            className="error"
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="phone">Phone</label>
-                                        <Field
-                                            className="form-element"
-                                            type="text"
-                                            id="phone"
-                                            name="phone"
-                                        />
-                                        <ErrorMessage
-                                            name="phone"
-                                            component="span"
-                                            className="error"
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="name">Email</label>
-                                        <Field
-                                            className="form-element"
-                                            type="text"
-                                            id="email"
-                                            name="email"
-                                        />
-                                        <ErrorMessage
-                                            name="email"
-                                            component="span"
-                                            className="error"
-                                        />
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="education">
-                                            Education
-                                        </label>
-                                        <Field
-                                            as="select"
-                                            name="education"
-                                            className="form-element"
-                                            id="education"
-                                        >
-                                            <option value="">- select -</option>
-                                            <option value={1}>Bsc (IT)</option>
-                                            <option value={2}>BE</option>
-                                            <option value={3}>BCA</option>
-                                        </Field>
-                                        <ErrorMessage
-                                            name="education"
-                                            component="span"
-                                            className="error"
-                                        />
-                                    </div>
-                                    <div className="form-group span-2">
-                                        <label htmlFor="address">Address</label>
-                                        <Field
-                                            as="textarea"
-                                            className="textarea form-element"
-                                            name="address"
-                                            id="address"
-                                        />
-                                        <ErrorMessage
-                                            name="address"
-                                            component="span"
-                                            className="error"
-                                        />
-                                    </div>
-                                    <div className="form-group submit-btn span-2">
-                                        <Field
-                                            name="submit"
-                                            type="submit"
-                                            defaultValue="submit"
-                                        />
-                                    </div>
-                                </div>
-                            </Form>
-                        )}
-                    </Formik>
+                                </Form>
+                            )}
+                        </Formik>
+                    )}
                 </main>
             </div>
         </>
