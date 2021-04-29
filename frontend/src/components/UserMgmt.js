@@ -1,24 +1,16 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useUsers } from '../contexts/usersProvider'
+import { useUsers } from '../contexts/users/userProviders'
 import { MdDelete, MdModeEdit } from 'react-icons/md'
 import Loader from 'react-loader-spinner'
 
 const UserMgmt = () => {
-    const {
-        loading,
-        users,
-        getUser,
-        deleteUser,
-        success,
-        setSuccess,
-    } = useUsers()
+    const { loading, users, getUsers, deleteUser } = useUsers()
 
     useEffect(() => {
-        getUser()
-        success && setSuccess(false)
+        getUsers()
         // eslint-disable-next-line
-    }, [success])
+    }, [])
 
     const handleDelete = (id) => {
         if (window.confirm('Are you sure, want to delete this?')) {

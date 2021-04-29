@@ -3,9 +3,10 @@ import { IoIosArrowRoundBack } from 'react-icons/io'
 import { Link } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
-import { useUsers } from '../contexts/usersProvider'
+import { useUsers } from '../contexts/users/userProviders'
 import Loader from 'react-loader-spinner'
 import moment from 'moment'
+import { CLEAR_SUCCESS, CLEAR_USER } from '../contexts/users/userConstant'
 
 const addUserSchema = Yup.object().shape({
     firstName: Yup.string().required(),
@@ -23,10 +24,9 @@ const UserAdd = ({ match, history }) => {
         loading,
         success,
         getUser,
-        addUser,
         updateUser,
-        setSuccess,
-        setUser,
+        dispatch,
+        addUser,
     } = useUsers()
     const userId = match.params.id || null
 
@@ -34,13 +34,14 @@ const UserAdd = ({ match, history }) => {
         if (userId) {
             getUser(userId)
         } else {
-            setUser([])
+            dispatch({ type: CLEAR_USER })
         }
         if (success) {
-            setSuccess(false)
             history.push('/')
+            dispatch({ type: CLEAR_SUCCESS })
         }
-    }, [userId, success, history])
+        // eslint-disable-next-line
+    }, [userId, success, history, dispatch])
 
     return (
         <>
