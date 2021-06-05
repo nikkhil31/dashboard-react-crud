@@ -9,15 +9,8 @@ const getUsers = asyncHandler(async (req, res) => {
 })
 
 const addUsers = asyncHandler(async (req, res) => {
-    const {
-        firstName,
-        lastName,
-        email,
-        dob,
-        phone,
-        education,
-        address,
-    } = req.body
+    const { firstName, lastName, email, dob, phone, education, address } =
+        req.body
 
     const userExists = await User.findOne({ email })
 
@@ -56,11 +49,12 @@ const updateUsers = asyncHandler(async (req, res) => {
         user.address = req.body.address || user.address
         user.email = req.body.email || user.email
 
-        await user.save()
+        const _user = await user.save()
 
         res.json({
             status_code: '200',
-            status_code: 'success',
+            status_message: 'success',
+            user: _user,
         })
     } else {
         res.status(404)
