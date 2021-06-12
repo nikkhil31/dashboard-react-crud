@@ -1,6 +1,5 @@
 import asyncHandler from 'express-async-handler'
 import faker from 'faker'
-
 import Category from '../model/categoryModel.js'
 import subCategory from '../model/subcategoryModel.js'
 
