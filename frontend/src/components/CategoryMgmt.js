@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react'
+import { MdDelete, MdModeEdit } from 'react-icons/md'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert'
-import { MdDelete, MdModeEdit } from 'react-icons/md'
-// import Loader from 'react-loader-spinner'
-import { useDispatch, useSelector } from 'react-redux'
-import { deleteUser, listUsers } from '../redux/users/userAction'
+import { deleteCategory, listCategory } from '../redux/category/categoryAction'
 
-const UserMgmt = () => {
+const CategoryMgmt = () => {
     const dispatch = useDispatch()
 
-    const { users } = useSelector((state) => state.users)
+    const { categories } = useSelector((state) => state.categories)
 
     useEffect(() => {
-        dispatch(listUsers())
+        dispatch(listCategory())
     }, [dispatch])
 
     const handleDelete = (id) => {
@@ -24,7 +23,7 @@ const UserMgmt = () => {
             dangerMode: true,
         }).then((willDelete) => {
             if (willDelete) {
-                dispatch(deleteUser(id))
+                dispatch(deleteCategory(id))
             }
         })
     }
@@ -37,7 +36,7 @@ const UserMgmt = () => {
                     <Link to="#" className="more btn">
                         ...
                     </Link>
-                    <Link to="/user/add" className="btn add">
+                    <Link to="/category/add" className="btn add">
                         Add
                     </Link>
                 </div>
@@ -48,27 +47,23 @@ const UserMgmt = () => {
                     <thead>
                         <tr>
                             <th>Sr.</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Education</th>
-                            <th>Phone</th>
+                            <th>Category Name</th>
+                            <th>Short Description</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {users &&
-                            users.map((user, key) => (
-                                <tr key={user._id}>
+                        {categories &&
+                            categories.map((category, key) => (
+                                <tr key={category._id}>
                                     <td>{key + 1}</td>
-                                    <td>{user.firstName}</td>
-                                    <td>{user.lastName}</td>
-                                    <td>{user.email}</td>
-                                    <td>{user.educationInWord}</td>
-                                    <td>{user.phone}</td>
+                                    <td>{category.categoryName}</td>
+                                    <td>{category.shortDescription}</td>
                                     <td>
-                                        <Link to={`/user/edit/${user._id}`}>
+                                        <Link
+                                            to={`/category/edit/${category._id}`}
+                                        >
                                             <MdModeEdit />
                                         </Link>
                                     </td>
@@ -76,7 +71,9 @@ const UserMgmt = () => {
                                         <MdDelete
                                             style={{ cursor: 'pointer' }}
                                             onClick={() => {
-                                                return handleDelete(user._id)
+                                                return handleDelete(
+                                                    category._id
+                                                )
                                             }}
                                         />
                                     </td>
@@ -89,4 +86,4 @@ const UserMgmt = () => {
     )
 }
 
-export default UserMgmt
+export default CategoryMgmt

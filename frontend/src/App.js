@@ -7,15 +7,38 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import UserAdd from './components/UserAdd'
 import Loader from 'react-loader-spinner'
 import { useSelector } from 'react-redux'
+import CategoryMgmt from './components/CategoryMgmt'
+import CategoryAdd from './components/CategoryAdd'
 
 function App() {
-    const { loading } = useSelector((state) => state.global)
+    const { loading, fail, error, message, success } = useSelector(
+        (state) => state.global
+    )
 
     return (
         <Router>
             <div className="container">
                 <Left />
                 <div className="right">
+                    {success && message && (
+                        <div className="alert success">
+                            <span className="closebtn">&times;</span>
+                            {message}
+                        </div>
+                    )}
+
+                    {fail && (
+                        <div className="alert error">
+                            <span
+                                className="closebtn"
+                                onClick="this.parentElement.style.display='none';"
+                            >
+                                &times;
+                            </span>
+                            <strong>Danger!</strong> {error}.
+                        </div>
+                    )}
+
                     {/* Lording:
                     If got true in loading,
                     It will runs. */}
@@ -29,9 +52,13 @@ function App() {
                             className="loader-class"
                         />
                     )}
-                    <Route path="/" component={UserMgmt} exact />
-                    <Route path="/add-user" component={UserAdd} />
-                    <Route path="/edit-user/:id" component={UserAdd} />
+                    <Route path="/user" component={UserMgmt} exact />
+                    <Route path="/user/add" component={UserAdd} />
+                    <Route path="/user/edit/:id" component={UserAdd} />
+
+                    <Route path="/category" component={CategoryMgmt} exact />
+                    <Route path="/category/add" component={CategoryAdd} />
+                    <Route path="/category/edit/:id" component={CategoryAdd} />
                 </div>
             </div>
         </Router>

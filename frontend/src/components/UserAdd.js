@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoIosArrowRoundBack } from 'react-icons/io'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import moment from 'moment'
@@ -21,10 +21,13 @@ const addUserSchema = Yup.object().shape({
 const UserAdd = ({ match, history }) => {
     const dispatch = useDispatch()
 
+    const { success: globalSuccess } = useSelector((state) => state.global)
+
     const { user } = useSelector((state) => state.users)
-    const { success } = useSelector((state) => state.global)
 
     const userId = match.params.id || null
+
+    const [success, setSuccess] = useState(false)
 
     useEffect(() => {
         if (userId) {
@@ -36,15 +39,16 @@ const UserAdd = ({ match, history }) => {
 
     const submitHandler = (value) => {
         userId ? dispatch(updateUser(value, userId)) : dispatch(addUser(value))
-        success && history.push('/')
+        setSuccess(true)
     }
 
     return (
         <>
+            {success && globalSuccess && <Redirect to="/user" />}
             <div>
                 <div className="header">
                     <h2>
-                        <Link to="/">
+                        <Link to="/user">
                             <IoIosArrowRoundBack
                                 style={{
                                     verticalAlign: 'middle',

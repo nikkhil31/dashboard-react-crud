@@ -10,6 +10,8 @@ export const globalReducer = (state = {}, action) => {
                 loading: false,
                 success: true,
                 message: action.payload || '',
+                fail: false,
+                error: '',
             }
 
         case SET_FAIL:

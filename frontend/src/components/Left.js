@@ -15,11 +15,11 @@ const Left = () => {
                     </li>
                     <li>
                         <img src="/images/icons/cloud.png" alt="Overview" />
-                        <Link to="/">Cloud</Link>
+                        <Link to="/user">Users</Link>
                     </li>
                     <li>
                         <img src="/images/icons/sketch.png" alt="Overview" />
-                        <Link to="/">Sketch</Link>
+                        <Link to="/category">Category</Link>
                     </li>
                     <li>
                         <img src="/images/icons/experment.png" alt="Overview" />

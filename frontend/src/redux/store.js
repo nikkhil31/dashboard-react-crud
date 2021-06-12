@@ -3,10 +3,12 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { userReducer } from './users/userReducer'
 import { globalReducer } from './global/globalReducer'
+import { categoryReducer } from './category/categoryReducer'
 
 const reducer = combineReducers({
     global: globalReducer,
     users: userReducer,
+    categories: categoryReducer,
 })
 
 const initialState = {}

@@ -16,7 +16,7 @@ export const asyncHandler = (fn) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: SET_FAIL,
-            payload: error.message,
+            payload: error.response?.statusText || error.message,
         })
     }
 }
